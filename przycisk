@@ -1,0 +1,15 @@
+//PRZYCISK
+void setup() {
+  pinMode(2,INPUT); //definicja wejscia z przycisku
+  pinMode(13,OUTPUT);//definicja wyjścia na diodę
+  }
+
+void loop() {
+  if(digitalRead(2)==HIGH)     //warunek - przycisk wciśnięty
+    {
+    digitalWrite(13,HIGH);       //zaświecenie LED
+  }
+else {
+    digitalWrite(13,LOW);      //zgaszenie LED
+  }
+}
