@@ -1,0 +1,85 @@
+// define inputs and outputs
+#define p_start 9
+#define p_lewo 10
+#define p_prawo 11
+#define START 6
+#define PRAWO 7
+#define LEWO 8
+
+int licznik = 0;
+volatile int stan;
+
+void setup(){
+  
+ pinMode(p_start, INPUT);
+ pinMode(p_lewo, INPUT);
+ pinMode(p_prawo, INPUT);
+  
+ pinMode(START, OUTPUT); 
+ pinMode(PRAWO, OUTPUT); 
+ pinMode(LEWO, OUTPUT);
+ stan = 1;
+
+} 
+ 
+void loop()  {   
+  
+  if (digitalRead(p_start)== LOW) {stan = 1;} //
+  
+switch(stan) {
+  
+    case 1:  // oczekiwanie na start
+  
+  		if (digitalRead(p_start)== HIGH){ 
+    		licznik = licznik +1;
+    	  	stan = 2;
+    		Serial.begin(9600);
+    		Serial.println(licznik);
+		}
+  
+        else{
+    		digitalWrite(PRAWO,LOW);
+    		digitalWrite(LEWO,LOW);
+  			digitalWrite(START,LOW);
+        }
+  
+    break;
+  
+    case 2: // wybor kierunku obrotow
+  
+  		if (digitalRead(p_lewo)== HIGH){
+		stan = 3;
+ 		}
+  	
+  		if (digitalRead(p_prawo)== HIGH){
+		stan = 4;
+ 		}
+ 
+    break;
+    
+    case 3: // obroty w prawo
+  
+ 		digitalWrite(START,HIGH);
+    	digitalWrite(PRAWO,LOW);
+    	digitalWrite(LEWO,HIGH);
+  
+  		
+  		if (digitalRead(p_prawo)){ // zmiana kierunku obrotow
+        	stan = 4;
+        }
+    
+    break;
+  
+  	case 4: // obroty w lewo
+  
+        digitalWrite(START,HIGH);
+  		digitalWrite(PRAWO,HIGH);
+    	digitalWrite(LEWO,LOW);
+  
+  		if (digitalRead(p_lewo)){ // zmiana kierunku obrotow
+        	stan = 3;
+        }
+  
+  	break;
+    
+}}
